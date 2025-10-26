@@ -18,22 +18,22 @@ namespace BancoApi.Application.DTOs
     public class CreateContaDto
     {
         [Required(ErrorMessage = "O nome é obrigatório")]
-        [StringLength(100, ErrorMessage = "O nome deve ter no máximo 100 caracteres")]
+        [StringLength(255, ErrorMessage = "O nome deve ter no máximo 255 caracteres")]
         public string Nome { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "O documento é obrigatório")]
-        [StringLength(11, ErrorMessage = "O documento deve ter no máximo 11 caracteres")]
+        [StringLength(14, ErrorMessage = "O documento deve ter no máximo 14 caracteres")]
         public string Documento { get; set; } = string.Empty;
     }
 
     public class UpdateContaDto
     {
         [Required(ErrorMessage = "O nome é obrigatório")]
-        [StringLength(100, ErrorMessage = "O nome deve ter no máximo 100 caracteres")]
+        [StringLength(255, ErrorMessage = "O nome deve ter no máximo 255 caracteres")]
         public string Nome { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "O documento é obrigatório")]
-        [StringLength(11, ErrorMessage = "O documento deve ter no máximo 11 caracteres")]
+        [StringLength(14, ErrorMessage = "O documento deve ter no máximo 14 caracteres")]
         public string Documento { get; set; } = string.Empty;
 
         public bool Ativa { get; set; } = true;

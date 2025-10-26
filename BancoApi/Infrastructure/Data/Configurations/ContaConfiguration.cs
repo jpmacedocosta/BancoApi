@@ -17,12 +17,12 @@ namespace BancoApi.Infrastructure.Data.Configurations
             
             builder.Property(e => e.Numero)
                 .IsRequired()
-                .HasMaxLength(20)
+                .HasMaxLength(6)
                 .HasColumnName("numero");
 
             builder.Property(e => e.Nome)
                 .IsRequired()
-                .HasMaxLength(100)
+                .HasMaxLength(255)
                 .HasColumnName("nome");
 
             builder.Property(e => e.Documento)

@@ -17,18 +17,8 @@ namespace BancoApi.Domain.Entities
         public decimal Valor { get; set; }
         
         public DateTime DataTransferencia { get; set; }
-        
-        public StatusTransferencia Status { get; set; }
-                
+                        
         public virtual Conta ContaOrigem { get; set; } = null!;
         public virtual Conta ContaDestino { get; set; } = null!;
-    }
-    
-    public enum StatusTransferencia
-    {
-        Pendente = 0,
-        Processada = 1,
-        Rejeitada = 2,
-        Cancelada = 3
     }
 }

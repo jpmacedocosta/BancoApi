@@ -31,11 +31,6 @@ namespace BancoApi.Infrastructure.Data.Configurations
             builder.Property(e => e.DataTransferencia)
                 .IsRequired()
                 .HasColumnName("data_transferencia");
-            
-            builder.Property(e => e.Status)
-                .IsRequired()
-                .HasConversion<int>()
-                .HasColumnName("status");
 
             builder.HasOne(t => t.ContaOrigem)
                 .WithMany()

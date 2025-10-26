@@ -73,7 +73,6 @@ namespace BancoApi.Tests.Services
                 ContaDestinoId = 2,
                 Valor = 250.00m,
                 DataTransferencia = DateTime.UtcNow,
-                Status = StatusTransferencia.Pendente,
                 ContaOrigem = contaOrigem,
                 ContaDestino = contaDestino
             };
@@ -258,7 +257,6 @@ namespace BancoApi.Tests.Services
                 ContaDestinoId = 2,
                 Valor = 500.00m,
                 DataTransferencia = DateTime.UtcNow,
-                Status = StatusTransferencia.Pendente,
                 ContaOrigem = new Conta
                 {
                     Id = 1,

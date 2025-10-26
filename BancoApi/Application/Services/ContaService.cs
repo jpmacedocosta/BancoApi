@@ -107,13 +107,13 @@ namespace BancoApi.Application.Services
             string numeroGerado;
             bool numeroExiste;
 
-            // Gerar número aleatório com 5 dígitos + dígito verificador
+            // Gera número aleatório com 5 dígitos + dígito verificador
             do
             {
                 var random = new Random();
                 var numeroBase = random.Next(10000, 99999);
                 var digitoVerificador = numeroBase % 10;
-                numeroGerado = $"{numeroBase}-{digitoVerificador}";
+                numeroGerado = $"{numeroBase}{digitoVerificador}";
 
                 numeroExiste = await _contaRepository.ExistsByNumeroAsync(numeroGerado);
             }

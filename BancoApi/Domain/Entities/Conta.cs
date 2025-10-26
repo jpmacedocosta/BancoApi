@@ -7,15 +7,15 @@ namespace BancoApi.Domain.Entities
         public int Id { get; set; }
         
         [Required]
-        [StringLength(20)]
+        [StringLength(6)]
         public required string Numero { get; set; }
         
         [Required]
-        [StringLength(100)]
+        [StringLength(255)]
         public required string Nome { get; set; }
         
         [Required]
-        [StringLength(11)]
+        [StringLength(14)]
         public required string Documento { get; set; }
         
         public decimal Saldo { get; set; }
