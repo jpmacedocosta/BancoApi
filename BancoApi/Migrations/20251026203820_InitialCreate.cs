@@ -18,8 +18,8 @@ namespace BancoApi.Migrations
                 {
                     id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    numero = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false),
-                    nome = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    numero = table.Column<string>(type: "character varying(6)", maxLength: 6, nullable: false),
+                    nome = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
                     documento = table.Column<string>(type: "character varying(14)", maxLength: 14, nullable: false),
                     saldo = table.Column<decimal>(type: "numeric(18,2)", nullable: false),
                     data_criacao = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
@@ -41,8 +41,7 @@ namespace BancoApi.Migrations
                     conta_origem_id = table.Column<int>(type: "integer", nullable: false),
                     conta_destino_id = table.Column<int>(type: "integer", nullable: false),
                     valor = table.Column<decimal>(type: "numeric(18,2)", nullable: false),
-                    data_transferencia = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    status = table.Column<int>(type: "integer", nullable: false)
+                    data_transferencia = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {

@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace BancoApi.Migrations
 {
     [DbContext(typeof(BancoDbContext))]
-    [Migration("20251026191939_InitialCreate")]
+    [Migration("20251026203820_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -50,14 +50,14 @@ namespace BancoApi.Migrations
 
                     b.Property<string>("Nome")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)")
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)")
                         .HasColumnName("nome");
 
                     b.Property<string>("Numero")
                         .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("character varying(20)")
+                        .HasMaxLength(6)
+                        .HasColumnType("character varying(6)")
                         .HasColumnName("numero");
 
                     b.Property<decimal>("Saldo")
@@ -104,10 +104,6 @@ namespace BancoApi.Migrations
                     b.Property<DateTime>("DataTransferencia")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("data_transferencia");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("integer")
-                        .HasColumnName("status");
 
                     b.Property<decimal>("Valor")
                         .HasColumnType("decimal(18,2)")
