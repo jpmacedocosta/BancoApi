@@ -1,6 +1,6 @@
-# Banco API - Sistema Bancário com Clean Architecture
+# Banco API - Sistema Caixa de Banco
 
-Uma API RESTful para sistema bancário desenvolvida em .NET 8 com Clean Architecture, utilizando PostgreSQL como banco de dados e testes automatizados com Moq.
+Uma API RESTful para sistema bancário desenvolvida em .NET 8 com Clean Architecture, utilizando PostgreSQL como banco de dados e testes automatizados.
 
 ## 🏗️ Arquitetura
 
@@ -10,7 +10,7 @@ O projeto segue os princípios da Clean Architecture:
 - **Application**: Serviços, DTOs e regras de aplicação
 - **Infrastructure**: Repositórios, DbContext e acesso a dados
 - **Controllers**: Endpoints da API
-- **Tests**: Testes com xUnit e Moq (43 testes)
+- **Tests**: Testes Automatizados
 
 ## 🛠️ Tecnologias Utilizadas
 
@@ -19,8 +19,7 @@ O projeto segue os princípios da Clean Architecture:
 - **Entity Framework Core**
 - **PostgreSQL**
 - **Swagger/OpenAPI**
-- **xUnit**
-- **Moq**
+- **xUnit** e **Moq**
 
 ## 🗄️ Configuração do Banco de Dados
 
@@ -75,24 +74,24 @@ Abra o navegador em: `http://localhost:5273/swagger`
 ### Tabela: Contas
 | Campo | Tipo | Descrição |
 |-------|------|-----------|
-| Id | int | Chave primária |
-| Numero | varchar(20) | Número da conta (único) |
-| Nome | varchar(100) | Nome do titular |
-| Documento | varchar(14) | CPF/CNPJ (sem formatação) |
-| Saldo | decimal(18,2) | Saldo atual |
-| DataCriacao | timestamp | Data de criação |
-| Status | int | Status da conta (0=Inativa, 1=Ativa) |
-| DataAlteracao | timestamp | Data da última alteração |
-| UsuarioAlteracao | text | IP/usuário que fez a alteração |
+| id | int | Chave primária |
+| numero | varchar(20) | Número da conta (único) |
+| nome | varchar(100) | Nome do titular |
+| documento | varchar(14) | CPF/CNPJ (sem formatação) |
+| saldo | decimal(18,2) | Saldo atual |
+| data_criacao | timestamp | Data de criação |
+| status | int | Status da conta (0=Inativa, 1=Ativa) |
+| data_alteracao | timestamp | Data da última alteração |
+| usuario_alteracao | text | IP/usuário que fez a alteração |
 
 ### Tabela: Transferencias
 | Campo | Tipo | Descrição |
 |-------|------|-----------|
-| Id | int | Chave primária |
-| ContaOrigemId | int | ID da conta origem |
-| ContaDestinoId | int | ID da conta destino |
-| Valor | decimal(18,2) | Valor da transferência |
-| DataTransferencia | timestamp | Data da transferência |
+| id | int | Chave primária |
+| conta_origem_id | int | ID da conta origem |
+| conta_destino_id | int | ID da conta destino |
+| valor | decimal(18,2) | Valor da transferência |
+| data_transferencia | timestamp | Data da transferência |
 
 ## 🔗 Endpoints da API
 
@@ -109,7 +108,7 @@ Abra o navegador em: `http://localhost:5273/swagger`
 
 ## 🧪 Testes Automatizados
 
-O projeto possui uma suite completa de **43 testes automatizados** implementados com:
+O projeto possui **43 testes automatizados** implementados com:
 
 - **xUnit** - Framework de testes
 - **Moq** - Framework de mock para simulação de dependências
@@ -126,7 +125,6 @@ dotnet test --verbosity normal
 
 ### Cobertura
 - ✅ **43 testes** (100% passando)
-- 🏦 **18 testes** para `ContaService`
-- 💸 **9 testes** para `TransferenciaService`  
-- 🎮 **18 testes** para Controllers
-- 🛡️ **Cobertura completa** dos métodos públicos
+- ✅ **18 testes** para `ContaService`
+- ✅ **9 testes** para `TransferenciaService`  
+- ✅ **18 testes** para Controllers
