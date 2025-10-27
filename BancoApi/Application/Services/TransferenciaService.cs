@@ -32,6 +32,25 @@ namespace BancoApi.Application.Services
             var contaDestino = await _contaRepository.GetByDocumentoAsync(documentoDestino) 
                 ?? throw new InvalidOperationException("Conta de destino não encontrada.");
 
+            ValidarTransferencia(contaOrigem, contaDestino, createDto.Valor);
+
+            var transferencia = new Transferencia
+            {
+                ContaOrigemId = contaOrigem.Id,
+                ContaDestinoId = contaDestino.Id,
+                Valor = createDto.Valor,
+                DataTransferencia = DateTime.UtcNow
+            };
+
+            var transferenciaCriada = await _transferenciaRepository.CreateAsync(transferencia);
+
+            await AtualizarSaldosTransferencia(contaOrigem, contaDestino, createDto.Valor);
+
+            return MapToDto(transferenciaCriada);
+        }
+
+        private static void ValidarTransferencia(Conta contaOrigem, Conta contaDestino, decimal valor)
+        {
             if (contaOrigem.Id == contaDestino.Id)
             {
                 throw new InvalidOperationException("Conta de origem e destino não podem ser iguais.");
@@ -47,28 +66,19 @@ namespace BancoApi.Application.Services
                 throw new InvalidOperationException("Conta de destino deve estar ativa.");
             }
 
-            if (contaOrigem.Saldo < createDto.Valor)
+            if (contaOrigem.Saldo < valor)
             {
                 throw new InvalidOperationException("Saldo insuficiente na conta de origem.");
             }
+        }
 
-            var transferencia = new Transferencia
-            {
-                ContaOrigemId = contaOrigem.Id,
-                ContaDestinoId = contaDestino.Id,
-                Valor = createDto.Valor,
-                DataTransferencia = DateTime.UtcNow
-            };
-
-            var transferenciaCriada = await _transferenciaRepository.CreateAsync(transferencia);
-
-            contaOrigem.Saldo -= createDto.Valor;
-            contaDestino.Saldo += createDto.Valor;
+        private async Task AtualizarSaldosTransferencia(Conta contaOrigem, Conta contaDestino, decimal valor)
+        {
+            contaOrigem.Saldo -= valor;
+            contaDestino.Saldo += valor;
 
             await _contaRepository.UpdateAsync(contaOrigem);
             await _contaRepository.UpdateAsync(contaDestino);
-
-            return MapToDto(transferenciaCriada);
         }
 
         private static TransferenciaDto MapToDto(Transferencia transferencia)
