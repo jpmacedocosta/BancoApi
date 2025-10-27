@@ -97,9 +97,18 @@ namespace BancoApi.Tests.Controllers
                 }
             };
 
+            var pagedResult = new PagedResult<ContaDto>
+            {
+                Items = contasDto,
+                TotalItems = 2,
+                Page = 1,
+                PageSize = 10,
+                TotalPages = 1
+            };
+
             _mockContaService
-                .Setup(s => s.GetContaByNomeOrDocumentoAsync(termo))
-                .ReturnsAsync(contasDto);
+                .Setup(s => s.GetContaByNomeOrDocumentoPaginatedAsync(termo, 1, 10))
+                .ReturnsAsync(pagedResult);
 
             var resultado = await _controller.GetContaByNomeOrDocumento(termo);
 
@@ -107,19 +116,30 @@ namespace BancoApi.Tests.Controllers
             actionResult.Should().NotBeNull();
             actionResult!.StatusCode.Should().Be(200);
             
-            var contasRetornadas = actionResult.Value as IEnumerable<ContaDto>;
-            contasRetornadas.Should().NotBeNull();
-            contasRetornadas!.Should().HaveCount(2);
-            contasRetornadas.Should().OnlyContain(c => c.Nome.Contains("João"));
+            var resultadoPaginado = actionResult.Value as PagedResult<ContaDto>;
+            resultadoPaginado.Should().NotBeNull();
+            resultadoPaginado!.Items.Should().HaveCount(2);
+            resultadoPaginado.Items.Should().OnlyContain(c => c.Nome.Contains("João"));
+            resultadoPaginado.TotalItems.Should().Be(2);
+            resultadoPaginado.Page.Should().Be(1);
         }
 
         [Fact]
         public async Task GetContaByNomeOrDocumento_DeveRetornarNotFound_QuandoNenhumaContaExistir()
         {
             var termo = "inexistente";
+            var pagedResult = new PagedResult<ContaDto>
+            {
+                Items = new List<ContaDto>(),
+                TotalItems = 0,
+                Page = 1,
+                PageSize = 10,
+                TotalPages = 0
+            };
+
             _mockContaService
-                .Setup(s => s.GetContaByNomeOrDocumentoAsync(termo))
-                .ReturnsAsync(new List<ContaDto>());
+                .Setup(s => s.GetContaByNomeOrDocumentoPaginatedAsync(termo, 1, 10))
+                .ReturnsAsync(pagedResult);
 
             var resultado = await _controller.GetContaByNomeOrDocumento(termo);
 

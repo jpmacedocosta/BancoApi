@@ -97,7 +97,7 @@ Abra o navegador em: `http://localhost:5273/swagger`
 
 ### Contas
 - `GET /api/conta/{id}` - Buscar conta por ID
-- `GET /api/conta/termo={termo}` - Buscar conta por nome ou documento
+- `GET /api/conta/termo={termo}?page=1&pageSize=10` - Buscar conta por nome ou documento com paginação
 - `POST /api/conta` - Criar nova conta
 - `PATCH /api/conta/{documento}/inativar` - Inativar conta
 
@@ -108,7 +108,7 @@ Abra o navegador em: `http://localhost:5273/swagger`
 
 ## 🧪 Testes Automatizados
 
-O projeto possui **43 testes automatizados** implementados com:
+O projeto possui **42 testes automatizados** implementados com:
 
 - **xUnit** - Framework de testes
 - **Moq** - Framework de mock para simulação de dependências
@@ -120,11 +120,12 @@ O projeto possui **43 testes automatizados** implementados com:
 dotnet test
 
 # Executar com verbosidade
-dotnet test --verbosity normal
+dotnet test BancoApi.Tests --verbosity normal
 ```
 
-### Cobertura
-- ✅ **43 testes** (100% passando)
-- ✅ **18 testes** para `ContaService`
-- ✅ **9 testes** para `TransferenciaService`  
-- ✅ **18 testes** para Controllers
+### Cobertura por Arquivo
+- ✅ **42 testes** (100% passando)
+- ✅ **10 testes** para `ContaControllerTests`
+- ✅ **11 testes** para `ContaServiceTests`
+- ✅ **11 testes** para `TransferenciaControllerTests`
+- ✅ **10 testes** para `TransferenciaServiceTests`

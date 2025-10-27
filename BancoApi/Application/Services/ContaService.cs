@@ -19,12 +19,27 @@ namespace BancoApi.Application.Services
             return conta != null ? MapToDto(conta) : null;
         }
 
-        public async Task<IEnumerable<ContaDto>> GetContaByNomeOrDocumentoAsync(string termo)
+        public async Task<PagedResult<ContaDto>> GetContaByNomeOrDocumentoPaginatedAsync(string termo, int page, int pageSize)
         {
             termo = TirarFormatacaoDocumento(termo.Replace(" ", "").ToLower());
 
-            var contas = await _contaRepository.GetByNomeOrDocumentoAsync(termo);
-            return contas.Select(MapToDto);
+            var todasContas = await _contaRepository.GetByNomeOrDocumentoAsync(termo);
+            var contasDto = todasContas.Select(MapToDto).ToList();
+
+            var totalItems = contasDto.Count;
+            var totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
+
+            var skip = (page - 1) * pageSize;
+            var contasPaginadas = contasDto.Skip(skip).Take(pageSize);
+
+            return new PagedResult<ContaDto>
+            {
+                Items = contasPaginadas,
+                TotalItems = totalItems,
+                Page = page,
+                PageSize = pageSize,
+                TotalPages = totalPages
+            };
         }
 
         public async Task<ContaDto> CreateContaAsync(CreateContaDto createContaDto)

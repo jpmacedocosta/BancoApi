@@ -46,28 +46,50 @@ namespace BancoApi.Controllers
         }
 
         /// <summary>
-        /// Obtém contas por nome ou documento
+        /// Obtém contas por nome ou documento com paginação
         /// </summary>
         /// <param name="termo">Nome ou Documento do usuário da conta</param>
-        /// <returns>Lista de contas encontradas</returns>
+        /// <param name="page">Número da página (padrão: 1)</param>
+        /// <param name="pageSize">Itens por página (padrão: 10, máximo: 100)</param>
+        /// <returns>Lista paginada de contas encontradas</returns>
         [HttpGet("termo={termo}")]
-        [ProducesResponseType(typeof(IEnumerable<ContaDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(PagedResult<ContaDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<IEnumerable<ContaDto>>> GetContaByNomeOrDocumento(string termo)
+        public async Task<ActionResult<PagedResult<ContaDto>>> GetContaByNomeOrDocumento(
+            string termo,
+            [FromQuery] int page = 1,
+            [FromQuery] int pageSize = 10)
         {
             try
             {
-                var contas = await _contaService.GetContaByNomeOrDocumentoAsync(termo);
-                if (!contas.Any())
+                if (string.IsNullOrWhiteSpace(termo))
+                {
+                    return BadRequest("O termo de busca é obrigatório");
+                }
+
+                if (page < 1)
+                {
+                    return BadRequest("A página deve ser maior que 0");
+                }
+
+                if (pageSize < 1 || pageSize > 100)
+                {
+                    return BadRequest("O tamanho da página deve estar entre 1 e 100");
+                }
+
+                var resultado = await _contaService.GetContaByNomeOrDocumentoPaginatedAsync(termo, page, pageSize);
+                
+                if (!resultado.Items.Any())
                 {
                     return NotFound($"Nenhuma conta encontrada com o termo: {termo}");
                 }
 
-                return Ok(contas);
+                return Ok(resultado);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Erro ao obter conta com termo {termo}", termo);
+                _logger.LogError(ex, "Erro ao obter contas com termo {termo}", termo);
                 return StatusCode(500, "Erro interno do servidor");
             }
         }
