@@ -22,37 +22,7 @@ namespace BancoApi.Tests.Services
                 _mockContaRepository.Object);
         }
 
-        [Fact]
-        public async Task GetTransferenciaByIdAsync_DeveRetornarTransferencia_QuandoExistir()
-        {
-            var transferenciaId = 1;
-            var transferencia = CriarTransferenciaParaTeste(transferenciaId);
 
-            _mockTransferenciaRepository
-                .Setup(r => r.GetByIdAsync(transferenciaId))
-                .ReturnsAsync(transferencia);
-
-            var resultado = await _transferenciaService.GetTransferenciaByIdAsync(transferenciaId);
-
-            resultado.Should().NotBeNull();
-            resultado!.Id.Should().Be(transferenciaId);
-            resultado.Valor.Should().Be(500.00m);
-            resultado.ContaOrigemNome.Should().Be("João Silva");
-            resultado.ContaDestinoNome.Should().Be("Maria Santos");
-        }
-
-        [Fact]
-        public async Task GetTransferenciaByIdAsync_DeveRetornarNull_QuandoNaoExistir()
-        {
-            var transferenciaId = 999;
-            _mockTransferenciaRepository
-                .Setup(r => r.GetByIdAsync(transferenciaId))
-                .ReturnsAsync((Transferencia?)null);
-
-            var resultado = await _transferenciaService.GetTransferenciaByIdAsync(transferenciaId);
-
-            resultado.Should().BeNull();
-        }
 
         [Fact]
         public async Task CreateTransferenciaAsync_DeveCriarTransferencia_QuandoDadosValidos()

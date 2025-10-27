@@ -19,33 +19,6 @@ namespace BancoApi.Controllers
         }
 
         /// <summary>
-        /// Obtém uma transferência por ID
-        /// </summary>
-        /// <param name="id">ID da transferência</param>
-        /// <returns>Dados da transferência</returns>
-        [HttpGet("{id}")]
-        [ProducesResponseType(typeof(TransferenciaDto), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<TransferenciaDto>> GetTransferencia(int id)
-        {
-            try
-            {
-                var transferencia = await _transferenciaService.GetTransferenciaByIdAsync(id);
-                if (transferencia == null)
-                {
-                    return NotFound($"Transferência com ID {id} não encontrada");
-                }
-
-                return Ok(transferencia);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Erro ao obter transferência com ID {Id}", id);
-                return StatusCode(500, "Erro interno do servidor");
-            }
-        }
-
-        /// <summary>
         /// Obtém transferências por documento da conta
         /// </summary>
         /// <param name="documento">Documento da conta</param>
@@ -84,7 +57,7 @@ namespace BancoApi.Controllers
                 }
 
                 var transferencia = await _transferenciaService.CreateTransferenciaAsync(createDto);
-                return CreatedAtAction(nameof(GetTransferencia), new { id = transferencia.Id }, transferencia);
+                return StatusCode(201, transferencia);
             }
             catch (InvalidOperationException ex)
             {

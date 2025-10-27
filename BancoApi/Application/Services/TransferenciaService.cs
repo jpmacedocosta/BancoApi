@@ -15,12 +15,6 @@ namespace BancoApi.Application.Services
             _contaRepository = contaRepository;
         }
 
-        public async Task<TransferenciaDto?> GetTransferenciaByIdAsync(int id)
-        {
-            var transferencia = await _transferenciaRepository.GetByIdAsync(id);
-            return transferencia != null ? MapToDto(transferencia) : null;
-        }
-
         public async Task<IEnumerable<TransferenciaDto>> GetTransferenciasPorContaAsync(string documento)
         {
             var transferencias = await _transferenciaRepository.GetByDocumentoAsync(documento);

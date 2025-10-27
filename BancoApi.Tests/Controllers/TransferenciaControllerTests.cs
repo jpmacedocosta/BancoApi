@@ -22,42 +22,7 @@ namespace BancoApi.Tests.Controllers
             _controller = new TransferenciaController(_mockTransferenciaService.Object, _mockLogger.Object);
         }
 
-        [Fact]
-        public async Task GetTransferencia_DeveRetornarOk_QuandoTransferenciaExistir()
-        {
-            var transferenciaId = 1;
-            var transferenciaDto = CriarTransferenciaDtoParaTeste(transferenciaId);
 
-            _mockTransferenciaService
-                .Setup(s => s.GetTransferenciaByIdAsync(transferenciaId))
-                .ReturnsAsync(transferenciaDto);
-
-            var resultado = await _controller.GetTransferencia(transferenciaId);
-
-            var actionResult = resultado.Result as OkObjectResult;
-            actionResult.Should().NotBeNull();
-            actionResult!.StatusCode.Should().Be(200);
-            
-            var transferenciaRetornada = actionResult.Value as TransferenciaDto;
-            transferenciaRetornada.Should().NotBeNull();
-            transferenciaRetornada!.Id.Should().Be(transferenciaId);
-        }
-
-        [Fact]
-        public async Task GetTransferencia_DeveRetornarNotFound_QuandoTransferenciaNaoExistir()
-        {
-            var transferenciaId = 999;
-            _mockTransferenciaService
-                .Setup(s => s.GetTransferenciaByIdAsync(transferenciaId))
-                .ReturnsAsync((TransferenciaDto?)null);
-
-            var resultado = await _controller.GetTransferencia(transferenciaId);
-
-            var actionResult = resultado.Result as NotFoundObjectResult;
-            actionResult.Should().NotBeNull();
-            actionResult!.StatusCode.Should().Be(404);
-            actionResult.Value.Should().Be($"Transferência com ID {transferenciaId} não encontrada");
-        }
 
         [Fact]
         public async Task GetTransferenciasPorConta_DeveRetornarOk_ComListaDeTransferencias()
@@ -102,10 +67,9 @@ namespace BancoApi.Tests.Controllers
 
             var resultado = await _controller.CreateTransferencia(createDto);
 
-            var actionResult = resultado.Result as CreatedAtActionResult;
+            var actionResult = resultado.Result as ObjectResult;
             actionResult.Should().NotBeNull();
             actionResult!.StatusCode.Should().Be(201);
-            actionResult.ActionName.Should().Be(nameof(_controller.GetTransferencia));
             
             var transferenciaRetornada = actionResult.Value as TransferenciaDto;
             transferenciaRetornada.Should().NotBeNull();
