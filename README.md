@@ -96,19 +96,17 @@ Abra o navegador em: `http://localhost:5273/swagger`
 ## 🔗 Endpoints da API
 
 ### Contas
-- `GET /api/conta/{id}` - Buscar conta por ID
 - `GET /api/conta/termo={termo}?page=1&pageSize=10` - Buscar conta por nome ou documento com paginação
 - `POST /api/conta` - Criar nova conta
 - `PATCH /api/conta/{documento}/inativar` - Inativar conta
 
 ### Transferências
-- `GET /api/transferencia/{id}` - Buscar transferência por ID
 - `GET /api/transferencia/conta/{documento}` - Buscar transferências por documento da conta
 - `POST /api/transferencia` - Criar nova transferência
 
 ## 🧪 Testes Automatizados
 
-O projeto possui **42 testes automatizados** implementados com:
+O projeto possui **34 testes automatizados** implementados com:
 
 - **xUnit** - Framework de testes
 - **Moq** - Framework de mock para simulação de dependências
@@ -124,8 +122,8 @@ dotnet test BancoApi.Tests --verbosity normal
 ```
 
 ### Cobertura por Arquivo
-- ✅ **42 testes** (100% passando)
-- ✅ **10 testes** para `ContaControllerTests`
-- ✅ **11 testes** para `ContaServiceTests`
-- ✅ **11 testes** para `TransferenciaControllerTests`
-- ✅ **10 testes** para `TransferenciaServiceTests`
+- ✅ **34 testes** (100% passando)
+- ✅ **8 testes** para `ContaControllerTests`
+- ✅ **9 testes** para `ContaServiceTests`
+- ✅ **9 testes** para `TransferenciaControllerTests`
+- ✅ **8 testes** para `TransferenciaServiceTests`
