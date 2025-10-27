@@ -13,12 +13,6 @@ namespace BancoApi.Application.Services
             _contaRepository = contaRepository;
         }
 
-        public async Task<ContaDto?> GetContaByIdAsync(int id)
-        {
-            var conta = await _contaRepository.GetByIdAsync(id);
-            return conta != null ? MapToDto(conta) : null;
-        }
-
         public async Task<PagedResult<ContaDto>> GetContaByNomeOrDocumentoPaginatedAsync(string termo, int page, int pageSize)
         {
             termo = TirarFormatacaoDocumento(termo.Replace(" ", "").ToLower());

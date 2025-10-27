@@ -22,52 +22,7 @@ namespace BancoApi.Tests.Controllers
             _controller = new ContaController(_mockContaService.Object, _mockLogger.Object);
         }
 
-        [Fact]
-        public async Task GetConta_DeveRetornarOk_QuandoContaExistir()
-        {
-            var contaId = 1;
-            var contaDto = new ContaDto
-            {
-                Id = contaId,
-                Numero = "12345-6",
-                Nome = "João Silva",
-                Documento = "12345678901",
-                Saldo = 1000.00m,
-                DataCriacao = DateTime.UtcNow,
-                Status = StatusConta.Ativa
-            };
 
-            _mockContaService
-                .Setup(s => s.GetContaByIdAsync(contaId))
-                .ReturnsAsync(contaDto);
-
-            var resultado = await _controller.GetConta(contaId);
-
-            var actionResult = resultado.Result as OkObjectResult;
-            actionResult.Should().NotBeNull();
-            actionResult!.StatusCode.Should().Be(200);
-            
-            var contaRetornada = actionResult.Value as ContaDto;
-            contaRetornada.Should().NotBeNull();
-            contaRetornada!.Id.Should().Be(contaId);
-            contaRetornada.Nome.Should().Be("João Silva");
-        }
-
-        [Fact]
-        public async Task GetConta_DeveRetornarNotFound_QuandoContaNaoExistir()
-        {
-            var contaId = 999;
-            _mockContaService
-                .Setup(s => s.GetContaByIdAsync(contaId))
-                .ReturnsAsync((ContaDto?)null);
-
-            var resultado = await _controller.GetConta(contaId);
-
-            var actionResult = resultado.Result as NotFoundObjectResult;
-            actionResult.Should().NotBeNull();
-            actionResult!.StatusCode.Should().Be(404);
-            actionResult.Value.Should().Be($"Conta com ID {contaId} não encontrada");
-        }
 
         [Fact]
         public async Task GetContaByNomeOrDocumento_DeveRetornarOk_QuandoContasExistirem()
@@ -175,10 +130,9 @@ namespace BancoApi.Tests.Controllers
 
             var resultado = await _controller.CreateConta(createDto);
 
-            var actionResult = resultado.Result as CreatedAtActionResult;
+            var actionResult = resultado.Result as ObjectResult;
             actionResult.Should().NotBeNull();
             actionResult!.StatusCode.Should().Be(201);
-            actionResult.ActionName.Should().Be(nameof(_controller.GetConta));
             
             var contaRetornada = actionResult.Value as ContaDto;
             contaRetornada.Should().NotBeNull();

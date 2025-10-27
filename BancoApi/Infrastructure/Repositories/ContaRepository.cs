@@ -16,12 +16,6 @@ namespace BancoApi.Infrastructure.Repositories
             _context = context;
         }
 
-        public async Task<Conta?> GetByIdAsync(int id)
-        {
-            return await _context.Contas
-                .FirstOrDefaultAsync(c => c.Id == id);
-        }
-
         public async Task<List<Conta>> GetByNomeOrDocumentoAsync(string termoLimpo)
         {
             var resultados = new List<Conta>();

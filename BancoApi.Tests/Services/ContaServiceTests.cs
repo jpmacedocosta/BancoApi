@@ -18,46 +18,7 @@ namespace BancoApi.Tests.Services
             _contaService = new ContaService(_mockContaRepository.Object);
         }
 
-        [Fact]
-        public async Task GetContaByIdAsync_DeveRetornarConta_QuandoContaExistir()
-        {
-            var contaId = 1;
-            var conta = new Conta
-            {
-                Id = contaId,
-                Numero = "12345-6",
-                Nome = "João Silva",
-                Documento = "12345678901",
-                Saldo = 1000.00m,
-                DataCriacao = DateTime.UtcNow,
-                Status = StatusConta.Ativa
-            };
 
-            _mockContaRepository
-                .Setup(r => r.GetByIdAsync(contaId))
-                .ReturnsAsync(conta);
-
-            var resultado = await _contaService.GetContaByIdAsync(contaId);
-
-            resultado.Should().NotBeNull();
-            resultado!.Id.Should().Be(contaId);
-            resultado.Nome.Should().Be("João Silva");
-            resultado.Documento.Should().Be("12345678901");
-            resultado.Saldo.Should().Be(1000.00m);
-        }
-
-        [Fact]
-        public async Task GetContaByIdAsync_DeveRetornarNull_QuandoContaNaoExistir()
-        {
-            var contaId = 999;
-            _mockContaRepository
-                .Setup(r => r.GetByIdAsync(contaId))
-                .ReturnsAsync((Conta?)null);
-
-            var resultado = await _contaService.GetContaByIdAsync(contaId);
-
-            resultado.Should().BeNull();
-        }
 
         [Fact]
         public async Task CreateContaAsync_DeveCriarConta_QuandoDadosValidos()

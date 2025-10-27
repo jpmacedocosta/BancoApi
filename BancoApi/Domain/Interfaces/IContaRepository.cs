@@ -4,7 +4,6 @@ namespace BancoApi.Domain.Interfaces
 {
     public interface IContaRepository
     {
-        Task<Conta?> GetByIdAsync(int id);
         Task<List<Conta>> GetByNomeOrDocumentoAsync(string termo);
         Task<Conta?> GetByDocumentoAsync(string documento);
         Task<Conta> CreateAsync(Conta conta);

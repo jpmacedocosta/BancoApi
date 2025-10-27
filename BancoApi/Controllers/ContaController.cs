@@ -19,33 +19,6 @@ namespace BancoApi.Controllers
         }
 
         /// <summary>
-        /// Obtém uma conta por ID
-        /// </summary>
-        /// <param name="id">ID da conta</param>
-        /// <returns>Dados da conta</returns>
-        [HttpGet("{id}")]
-        [ProducesResponseType(typeof(ContaDto), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<ContaDto>> GetConta(int id)
-        {
-            try
-            {
-                var conta = await _contaService.GetContaByIdAsync(id);
-                if (conta == null)
-                {
-                    return NotFound($"Conta com ID {id} não encontrada");
-                }
-
-                return Ok(conta);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Erro ao obter conta com ID {Id}", id);
-                return StatusCode(500, "Erro interno do servidor");
-            }
-        }
-
-        /// <summary>
         /// Obtém contas por nome ou documento com paginação
         /// </summary>
         /// <param name="termo">Nome ou Documento do usuário da conta</param>
@@ -112,7 +85,7 @@ namespace BancoApi.Controllers
                 }
 
                 var conta = await _contaService.CreateContaAsync(createContaDto);
-                return CreatedAtAction(nameof(GetConta), new { id = conta.Id }, conta);
+                return StatusCode(201, conta);
             }
             catch (InvalidOperationException ex)
             {
