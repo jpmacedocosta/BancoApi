@@ -28,6 +28,7 @@ namespace BancoApi.Tests.Controllers
         public async Task GetContaByNomeOrDocumento_DeveRetornarOk_QuandoContasExistirem()
         {
             var termo = "joão";
+            var pagination = new PaginationRequest { Page = 1, PageSize = 10 };
             var contasDto = new List<ContaDto>
             {
                 new ContaDto
@@ -65,7 +66,7 @@ namespace BancoApi.Tests.Controllers
                 .Setup(s => s.GetContaByNomeOrDocumentoPaginatedAsync(termo, 1, 10))
                 .ReturnsAsync(pagedResult);
 
-            var resultado = await _controller.GetContaByNomeOrDocumento(termo);
+            var resultado = await _controller.GetContaByNomeOrDocumento(termo, pagination);
 
             var actionResult = resultado.Result as OkObjectResult;
             actionResult.Should().NotBeNull();
@@ -83,6 +84,7 @@ namespace BancoApi.Tests.Controllers
         public async Task GetContaByNomeOrDocumento_DeveRetornarNotFound_QuandoNenhumaContaExistir()
         {
             var termo = "inexistente";
+            var pagination = new PaginationRequest { Page = 1, PageSize = 10 };
             var pagedResult = new PagedResult<ContaDto>
             {
                 Items = new List<ContaDto>(),
@@ -96,7 +98,7 @@ namespace BancoApi.Tests.Controllers
                 .Setup(s => s.GetContaByNomeOrDocumentoPaginatedAsync(termo, 1, 10))
                 .ReturnsAsync(pagedResult);
 
-            var resultado = await _controller.GetContaByNomeOrDocumento(termo);
+            var resultado = await _controller.GetContaByNomeOrDocumento(termo, pagination);
 
             var actionResult = resultado.Result as NotFoundObjectResult;
             actionResult.Should().NotBeNull();

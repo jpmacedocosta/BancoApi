@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace BancoApi.Application.DTOs
 {
@@ -16,9 +17,11 @@ namespace BancoApi.Application.DTOs
     public class PaginationRequest
     {
         [Range(1, int.MaxValue, ErrorMessage = "A página deve ser maior que 0")]
+        [JsonPropertyName("page")]
         public int Page { get; set; } = 1;
 
         [Range(1, 100, ErrorMessage = "O tamanho da página deve estar entre 1 e 100")]
+        [JsonPropertyName("pageSize")]
         public int PageSize { get; set; } = 10;
     }
 }

@@ -22,8 +22,7 @@ namespace BancoApi.Controllers
         /// Obtém contas por nome ou documento com paginação
         /// </summary>
         /// <param name="termo">Nome ou Documento do usuário da conta</param>
-        /// <param name="page">Número da página (padrão: 1)</param>
-        /// <param name="pageSize">Itens por página (padrão: 10, máximo: 100)</param>
+        /// <param name="paginationRequest">Parâmetros de paginação</param>
         /// <returns>Lista paginada de contas encontradas</returns>
         [HttpGet("termo={termo}")]
         [ProducesResponseType(typeof(PagedResult<ContaDto>), StatusCodes.Status200OK)]
@@ -31,8 +30,7 @@ namespace BancoApi.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<PagedResult<ContaDto>>> GetContaByNomeOrDocumento(
             string termo,
-            [FromQuery] int page = 1,
-            [FromQuery] int pageSize = 10)
+            [FromQuery] PaginationRequest pagination)
         {
             try
             {
@@ -41,18 +39,13 @@ namespace BancoApi.Controllers
                     return BadRequest("O termo de busca é obrigatório");
                 }
 
-                if (page < 1)
+                if (!ModelState.IsValid)
                 {
-                    return BadRequest("A página deve ser maior que 0");
+                    return BadRequest(ModelState);
                 }
 
-                if (pageSize < 1 || pageSize > 100)
-                {
-                    return BadRequest("O tamanho da página deve estar entre 1 e 100");
-                }
+                var resultado = await _contaService.GetContaByNomeOrDocumentoPaginatedAsync(termo, pagination.Page, pagination.PageSize);
 
-                var resultado = await _contaService.GetContaByNomeOrDocumentoPaginatedAsync(termo, page, pageSize);
-                
                 if (!resultado.Items.Any())
                 {
                     return NotFound($"Nenhuma conta encontrada com o termo: {termo}");
